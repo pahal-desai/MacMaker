@@ -1,4 +1,4 @@
-async function loadSpecs() {
+async function loadspecs() {
     const container = document.getElementById("specs");
 
     try {
@@ -21,4 +21,4 @@ async function loadSpecs() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", loadSpecs);
+document.addEventListener("DOMContentLoaded", loadspecs);

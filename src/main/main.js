@@ -3,61 +3,25 @@ const path = require("path");
 const { spawn } = require("child_process");
 const fs = require("fs");
 
-function getPythonPath() {
-    const venvPython = path.join(__dirname, "../../.venv/bin/python");
-    const venvPythonWin = path.join(__dirname, "../../.venv/Scripts/python.exe");
+function getpython() {
+    const venv = path.join(__dirname, "../../.venv/bin/python");
+    const venvwin = path.join(__dirname, "../../.venv/Scripts/python.exe");
 
-    if (fs.existsSync(venvPython)) return venvPython;
-    if (fs.existsSync(venvPythonWin)) return venvPythonWin;
+    if (fs.existsSync(venv)) return venv;
+    if (fs.existsSync(venvwin)) return venvwin;
     return process.platform === "win32" ? "python" : "python3";
 }
 
-function getScriptPath() {
+function getscript() {
     if (app.isPackaged) {
-        const unpackedPath = path.join(process.resourcesPath, "app.asar.unpacked/src/backend/hardware.py");
-        if (fs.existsSync(unpackedPath)) return unpackedPath;
+        const unpacked = path.join(process.resourcesPath, "app.asar.unpacked/src/backend/hardware.py");
+        if (fs.existsSync(unpacked)) return unpacked;
     }
     return path.join(__dirname, "../backend/hardware.py");
 }
 
-function fetchHardwareSpecs() {
+function run(py, args) {
     return new Promise((resolve, reject) => {
-        const pythonExecutable = getPythonPath();
-        const scriptPath = getScriptPath();
-
-        const pyProc = spawn(pythonExecutable, [scriptPath]);
-        let output = "";
-        let errorOutput = "";
-
-        pyProc.stdout.on("data", (data) => {
-            output += data.toString();
-        });
-
-        pyProc.stderr.on("data", (data) => {
-            errorOutput += data.toString();
-        });
-
-        pyProc.on("close", (code) => {
-            if (code !== 0) {
-                return reject(new Error(errorOutput || `Python process exited with code ${code}`));
-            }
-            try {
-                const parsed = JSON.parse(output.trim());
-                resolve(parsed);
-            } catch (err) {
-                reject(new Error(`Failed to parse hardware info: ${err.message}`));
-            }
-        });
-    });
-}
-
-function installdeps() {
-    return new Promise((resolve, reject) => {
-        const py = getPythonPath();
-        const args = ["-m", "pip", "install", "psutil", "py-cpuinfo"];
-        if (process.platform === "win32") {
-            args.push("wmi");
-        }
         const proc = spawn(py, args);
         let out = "";
         let err = "";
@@ -72,15 +36,62 @@ function installdeps() {
 
         proc.on("close", (code) => {
             if (code === 0) {
-                resolve("Dependencies installed successfully.");
+                resolve(out);
             } else {
-                reject(new Error(err || `Pip exited with code ${code}`));
+                reject(new Error(err || `Exit code ${code}`));
             }
         });
     });
 }
 
-function createWindow() {
+async function fetchspecs() {
+    const py = getpython();
+    const script = getscript();
+    const out = await run(py, [script]);
+    try {
+        return JSON.parse(out.trim());
+    } catch (err) {
+        throw new Error(`Failed to parse hardware info: ${err.message}`);
+    }
+}
+
+async function installdeps() {
+    const py = getpython();
+    const pkgs = ["psutil", "py-cpuinfo"];
+    if (process.platform === "win32") {
+        pkgs.push("wmi");
+    }
+
+    const check = process.platform === "win32"
+        ? "import psutil, cpuinfo, wmi"
+        : "import psutil, cpuinfo";
+
+    try {
+        await run(py, ["-c", check]);
+        return "Dependencies already installed.";
+    } catch (e) {
+    }
+
+    const tries = [
+        ["-m", "pip", "install", "--user", "--break-system-packages", ...pkgs],
+        ["-m", "pip", "install", "--user", ...pkgs],
+        ["-m", "pip", "install", ...pkgs]
+    ];
+
+    let last = "";
+    for (const item of tries) {
+        try {
+            await run(py, item);
+            return "Dependencies installed successfully.";
+        } catch (err) {
+            last = err.message;
+        }
+    }
+
+    throw new Error(last);
+}
+
+function createwin() {
     const win = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -102,15 +113,15 @@ ipcMain.handle("installdeps", async () => {
 });
 
 ipcMain.handle("get-hardware-specs", async () => {
-    return await fetchHardwareSpecs();
+    return await fetchspecs();
 });
 
-app.whenReady().then(createWindow);
+app.whenReady().then(createwin);
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") app.quit();
 });
 
 app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createwin();
 });
