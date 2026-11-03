@@ -45,7 +45,7 @@ The implementation may evolve as development progresses.
 
 ## Roadmap
 
-- [ ] Desktop application foundation
+- [x] Desktop application foundation
 - [ ] Hardware detection
 - [ ] Hardware compatibility analysis
 - [ ] Guided USB mapping
