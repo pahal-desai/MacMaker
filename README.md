@@ -46,7 +46,7 @@ The implementation may evolve as development progresses.
 ## Roadmap
 
 - [x] Desktop application foundation
-- [ ] Hardware detection
+- [x] Hardware detection
 - [ ] Hardware compatibility analysis
 - [ ] Guided USB mapping
 - [ ] OpenCore EFI generation
