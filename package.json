@@ -2,9 +2,10 @@
   "name": "macmaker",
   "version": "1.0.0",
   "description": "<!-- trying to make it sound professional. thar doesnt mean that its all ai --> # MacMaker",
-  "main": "index.js",
+  "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
+    "renderer": "node --check src/renderer/script.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

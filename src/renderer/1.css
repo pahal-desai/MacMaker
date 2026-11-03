@@ -1,0 +1,129 @@
+:root {
+    --bg: #141218;
+    --text: #e6e0e9;
+    --subtext: #cac4d0;
+    --btncolor: #d0bcff;
+    --btntext: #381e72;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+}
+
+.content {
+    flex: 1;
+}
+
+h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.specs-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--subtext);
+}
+
+.specs-text p {
+    margin: 0.4rem 0;
+}
+
+.specs-text strong {
+    color: var(--text);
+}
+
+.bottom-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end; /* Bottom-right corner */
+    padding-bottom: 1.5rem;
+}
+
+.actionbutton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 24px;
+    border-radius: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
+    border: none;
+    outline: none;
+    background-color: var(--btncolor);
+    color: var(--btntext);
+    transition: border-radius 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                color 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.actionbutton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1);
+    pointer-events: none;
+}
+
+.actionbutton:hover {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.actionbutton:hover::before {
+    opacity: 0.08;
+}
+
+.actionbutton:focus-visible::before {
+    opacity: 0.12;
+}
+
+.actionbutton:focus-visible {
+    outline: 2px solid var(--btncolor);
+    outline-offset: 2px;
+}
+
+.actionbutton:active::before {
+    opacity: 0.12;
+}
+
+.actionbutton:active {
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--subtext);
+}
+
+footer a {
+    text-decoration: none;
+    color: var(--subtext);
+}

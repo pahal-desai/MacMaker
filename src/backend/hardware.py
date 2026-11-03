@@ -33,4 +33,5 @@ def getspecs():
 
 
 if __name__ == "__main__":
-    print(getspecs())
+    import json
+    print(json.dumps(getspecs()))

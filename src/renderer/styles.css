@@ -4,8 +4,8 @@
     --subtext: #cac4d0;
     --btncolor: #d0bcff;
     --btntext: #381e72;
-    --tonalcolor: #4a4458;
-    --tonaltext: #e8def8;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -18,15 +18,17 @@ body {
     background: var(--bg);
     color: var(--text);
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 .middlearea {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    min-height: 100vh;
     padding: 2rem;
 }
 
@@ -73,6 +75,8 @@ body {
     user-select: none;
     border: none;
     outline: none;
+    background-color: var(--btncolor);
+    color: var(--btntext);
     transition: border-radius 0.2s cubic-bezier(0.2, 0, 0, 1),
                 box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
                 background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
@@ -90,12 +94,7 @@ body {
     pointer-events: none;
 }
 
-.getstarted {
-    background-color: var(--btncolor);
-    color: var(--btntext);
-}
-
-.getstarted:hover {
+.actionbutton:hover {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -120,11 +119,19 @@ body {
     border-radius: 8px;
     box-shadow: none;
 }
-footer{
+
+footer {
     text-align: center;
+    padding: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--subtext);
 }
 
-footer a{
+footer a {
     text-decoration: none;
-    color: #cac4d0;
+    color: var(--subtext);
+}
+
+footer a:hover {
+    color: var(--text);
 }
