@@ -1,0 +1,24 @@
+{
+  "name": "macmaker",
+  "version": "1.0.0",
+  "description": "<!-- trying to make it sound professional. thar doesnt mean that its all ai --> # MacMaker",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pahal-desai/MacMaker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pahal-desai/MacMaker/issues"
+  },
+  "homepage": "https://github.com/pahal-desai/MacMaker#readme",
+  "devDependencies": {
+    "electron": "^45.2.1"
+  }
+}
