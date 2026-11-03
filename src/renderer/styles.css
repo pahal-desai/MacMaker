@@ -1,0 +1,130 @@
+:root {
+    --bg: #141218;
+    --text: #e6e0e9;
+    --subtext: #cac4d0;
+    --btncolor: #d0bcff;
+    --btntext: #381e72;
+    --tonalcolor: #4a4458;
+    --tonaltext: #e8def8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+.middlearea {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.name {
+    text-align: center;
+}
+
+.name p {
+    margin: 0;
+    color: var(--subtext);
+}
+
+.name h1 {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    font-size: clamp(3.5rem, 10vw, 4.5rem);
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.actionbutton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 24px;
+    border-radius: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
+    border: none;
+    outline: none;
+    transition: border-radius 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                color 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.actionbutton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1);
+    pointer-events: none;
+}
+
+.getstarted {
+    background-color: var(--btncolor);
+    color: var(--btntext);
+}
+
+.getstarted:hover {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.actionbutton:hover::before {
+    opacity: 0.08;
+}
+
+.actionbutton:focus-visible::before {
+    opacity: 0.12;
+}
+
+.actionbutton:focus-visible {
+    outline: 2px solid var(--btncolor);
+    outline-offset: 2px;
+}
+
+.actionbutton:active::before {
+    opacity: 0.12;
+}
+
+.actionbutton:active {
+    border-radius: 8px;
+    box-shadow: none;
+}
+footer{
+    text-align: center;
+}
+
+footer a{
+    text-decoration: none;
+    color: #cac4d0;
+}
