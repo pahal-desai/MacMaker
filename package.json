@@ -6,7 +6,35 @@
   "scripts": {
     "start": "electron .",
     "renderer": "node --check src/renderer/script.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:linux": "electron-builder --linux",
+    "build:win": "electron-builder --win",
+    "dist": "electron-builder -wl"
+  },
+  "build": {
+    "appId": "com.pahal.macmaker",
+    "productName": "MacMaker",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "src/backend/**/*"
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    },
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
   },
   "repository": {
     "type": "git",
@@ -20,6 +48,7 @@
   },
   "homepage": "https://github.com/pahal-desai/MacMaker#readme",
   "devDependencies": {
-    "electron": "^45.2.1"
+    "electron": "^45.2.1",
+    "electron-builder": "^26.18.0"
   }
 }

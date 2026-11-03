@@ -1,4 +1,4 @@
-const button = document.getElementById('getstarted')
-button.addEventListener('click', ()=>{
-    window.location.href = '1.html';
+const btn = document.getElementById("getstarted");
+btn.addEventListener("click", () => {
+    window.location.href = "deps.html";
 });

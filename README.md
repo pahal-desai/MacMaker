@@ -54,6 +54,64 @@ The implementation may evolve as development progresses.
 - [ ] Guided installation workflow
 - [ ] Troubleshooting assistance
 
+## how to run it on your computer
+
+if you want to test or run this app on your computer here is how you can do it. it is not very hard just follow these steps.
+
+### stuff you need before starting
+make sure you got these installed on your pc:
+- node.js (grab it from nodejs website)
+- python 3 (if you are on windows remember to check the box that says add python to path)
+
+### steps to run it
+
+1. clone the repo and go inside the folder:
+```bash
+git clone https://github.com/pahal-desai/MacMaker.git
+cd MacMaker
+```
+
+2. install all the node stuff:
+```bash
+npm install
+```
+
+3. set up python virtual environment and get the packages:
+- on linux:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install psutil py-cpuinfo
+```
+- on windows (in cmd or powershell):
+```bat
+python -m venv .venv
+.venv\Scripts\activate
+pip install psutil py-cpuinfo wmi
+```
+
+4. start the app:
+```bash
+npm start
+```
+and thats it. the app window will open up and you can click next to see your hardware specs.
+
+### how to make the executable files
+
+if you want to make the app into a file you can just click and open:
+
+- for linux:
+```bash
+npm run build:linux
+```
+this makes an `.AppImage` file inside `dist` folder. you can just right click it, allow executing as program, and double click to run it.
+
+- for windows:
+```bash
+npm run build:win
+```
+this makes a `.exe` file in `dist` folder. you can run it on windows without needing to install anything extra.
+
 ## Contributing
 
 MacMaker is open source, and contributions are welcome.

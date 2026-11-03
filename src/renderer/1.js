@@ -1,5 +1,5 @@
 async function loadSpecs() {
-    const container = document.getElementById("specsText");
+    const container = document.getElementById("specs");
 
     try {
         if (!window.api || typeof window.api.getHardwareSpecs !== "function") {

@@ -12,10 +12,18 @@ function getPythonPath() {
     return process.platform === "win32" ? "python" : "python3";
 }
 
+function getScriptPath() {
+    if (app.isPackaged) {
+        const unpackedPath = path.join(process.resourcesPath, "app.asar.unpacked/src/backend/hardware.py");
+        if (fs.existsSync(unpackedPath)) return unpackedPath;
+    }
+    return path.join(__dirname, "../backend/hardware.py");
+}
+
 function fetchHardwareSpecs() {
     return new Promise((resolve, reject) => {
         const pythonExecutable = getPythonPath();
-        const scriptPath = path.join(__dirname, "../backend/hardware.py");
+        const scriptPath = getScriptPath();
 
         const pyProc = spawn(pythonExecutable, [scriptPath]);
         let output = "";
@@ -43,6 +51,35 @@ function fetchHardwareSpecs() {
     });
 }
 
+function installdeps() {
+    return new Promise((resolve, reject) => {
+        const py = getPythonPath();
+        const args = ["-m", "pip", "install", "psutil", "py-cpuinfo"];
+        if (process.platform === "win32") {
+            args.push("wmi");
+        }
+        const proc = spawn(py, args);
+        let out = "";
+        let err = "";
+
+        proc.stdout.on("data", (data) => {
+            out += data.toString();
+        });
+
+        proc.stderr.on("data", (data) => {
+            err += data.toString();
+        });
+
+        proc.on("close", (code) => {
+            if (code === 0) {
+                resolve("Dependencies installed successfully.");
+            } else {
+                reject(new Error(err || `Pip exited with code ${code}`));
+            }
+        });
+    });
+}
+
 function createWindow() {
     const win = new BrowserWindow({
         width: 1200,
@@ -59,6 +96,10 @@ function createWindow() {
 
     win.loadFile(path.join(__dirname, "../renderer/index.html"));
 }
+
+ipcMain.handle("installdeps", async () => {
+    return await installdeps();
+});
 
 ipcMain.handle("get-hardware-specs", async () => {
     return await fetchHardwareSpecs();
