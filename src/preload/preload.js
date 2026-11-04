@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
-    getHardwareSpecs: () => ipcRenderer.invoke("get-hardware-specs"),
+    gethardwarespecs: () => ipcRenderer.invoke("gethardwarespecs"),
+    getHardwareSpecs: () => ipcRenderer.invoke("gethardwarespecs"),
     installdeps: () => ipcRenderer.invoke("installdeps")
 });

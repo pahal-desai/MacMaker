@@ -112,6 +112,10 @@ ipcMain.handle("installdeps", async () => {
     return await installdeps();
 });
 
+ipcMain.handle("gethardwarespecs", async () => {
+    return await fetchspecs();
+});
+
 ipcMain.handle("get-hardware-specs", async () => {
     return await fetchspecs();
 });
