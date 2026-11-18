@@ -117,6 +117,90 @@ h1 {
     box-shadow: none;
 }
 
+.scorecard {
+    background: #1e1b24;
+    border: 1px solid #2d2836;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.scorenum {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #a8e6cf;
+    line-height: 1;
+}
+
+.scoreinfo h2 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.25rem;
+    color: var(--text);
+}
+
+.scoreinfo p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--subtext);
+}
+
+.itemcard {
+    background: #19161f;
+    border: 1px solid #262130;
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.6rem;
+}
+
+.itemhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.itemname {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.good {
+    background: #1b3d2b;
+    color: #a8e6cf;
+}
+
+.warn {
+    background: #4a3615;
+    color: #ffd3b6;
+}
+
+.bad {
+    background: #4d1c1c;
+    color: #ffaaa5;
+}
+
+.info {
+    background: #2b2247;
+    color: #d0bcff;
+}
+
+.itemnotes {
+    font-size: 0.85rem;
+    color: var(--subtext);
+    margin: 0;
+}
+
 footer {
     text-align: center;
     font-size: 0.85rem;

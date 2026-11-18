@@ -1,5 +1,12 @@
 async function loadspecs() {
     const box = document.getElementById("specs");
+    const btn = document.getElementById("nextbtn");
+
+    if (btn) {
+        btn.addEventListener("click", () => {
+            window.location.href = "analysis.html";
+        });
+    }
 
     try {
         const fn = window.api.gethardwarespecs || window.api.getHardwareSpecs;

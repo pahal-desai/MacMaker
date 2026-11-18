@@ -12,12 +12,12 @@ function getpython() {
     return process.platform === "win32" ? "python" : "python3";
 }
 
-function getscript() {
+function getscript(name = "hardware.py") {
     if (app.isPackaged) {
-        const unpacked = path.join(process.resourcesPath, "app.asar.unpacked/src/backend/hardware.py");
+        const unpacked = path.join(process.resourcesPath, `app.asar.unpacked/src/backend/${name}`);
         if (fs.existsSync(unpacked)) return unpacked;
     }
-    return path.join(__dirname, "../backend/hardware.py");
+    return path.join(__dirname, `../backend/${name}`);
 }
 
 function run(py, args) {
@@ -46,12 +46,23 @@ function run(py, args) {
 
 async function fetchspecs() {
     const py = getpython();
-    const script = getscript();
+    const script = getscript("hardware.py");
     const out = await run(py, [script]);
     try {
         return JSON.parse(out.trim());
     } catch (err) {
         throw new Error(`Failed to parse hardware info: ${err.message}`);
+    }
+}
+
+async function fetchanalysis() {
+    const py = getpython();
+    const script = getscript("analysis.py");
+    const out = await run(py, [script]);
+    try {
+        return JSON.parse(out.trim());
+    } catch (err) {
+        throw new Error(`Failed to parse analysis info: ${err.message}`);
     }
 }
 
@@ -114,6 +125,10 @@ ipcMain.handle("installdeps", async () => {
 
 ipcMain.handle("gethardwarespecs", async () => {
     return await fetchspecs();
+});
+
+ipcMain.handle("getanalysis", async () => {
+    return await fetchanalysis();
 });
 
 ipcMain.handle("get-hardware-specs", async () => {

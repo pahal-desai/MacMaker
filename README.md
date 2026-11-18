@@ -1,4 +1,3 @@
-<!-- trying to make it sound professional. thar doesnt mean that its all ai -->
 # MacMaker
 
 ### Hackintoshing. No tutorials required.
@@ -39,7 +38,6 @@ The planned architecture includes:
 - **Electron** — Desktop application.
 - **HTML, CSS and JavaScript** — User interface.
 - **Python** — Backend and system-level operations.
-- **SQLite** — Local data storage.
 
 The implementation may evolve as development progresses.
 
@@ -47,7 +45,7 @@ The implementation may evolve as development progresses.
 
 - [x] Desktop application foundation
 - [x] Hardware detection
-- [ ] Hardware compatibility analysis
+- [x] Hardware compatibility analysis
 - [ ] Guided USB mapping
 - [ ] OpenCore EFI generation
 - [ ] macOS recovery preparation
@@ -133,6 +131,21 @@ MacMaker is an independent community project and is not affiliated with, endorse
 Installing macOS on non-Apple hardware may be restricted by Apple's software licence and applicable laws. Users are responsible for understanding and complying with the relevant terms and laws.
 
 !! Hardware compatibility is not guaranteed !!
+
+## Credits
+
+MacMaker uses [OpCore Simplify](https://github.com/lzhoang2801/OpCore-Simplify)
+for hardware analysis and OpenCore configuration.
+
+OpCore Simplify is licensed under the BSD 3-Clause License.
+Copyright belongs to its original authors.
+
+See `THIRD_PARTY_LICENSES` for the full license.
+
+## AI Usage
+Let's be transparent on where and how AI is being used.
+Till now, AI has been used as a caltalyst. For example, to clone the UI of landing page (which I wrote myself), to the app & display the output of my python backend script to the frontend, etc.
+I am new to this open source and all. so i don't know much that how to write a proper readme. So, i have used ai to recommend me the style and what to write in the readme (the whole readme is NOT AI written).
 
 ## License
 
