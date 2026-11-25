@@ -141,10 +141,10 @@ MacMaker uses [USBToolBox](https://github.com/USBToolBox) (tool and kext)
 for guided USB discovery and custom mapping.
 
 OpCore Simplify is licensed under the BSD 3-Clause License.
-USBToolBox is licensed under the BSD 3-Clause License.
+USBToolBox is licensed under the MIT License.
 Copyright belongs to their original authors.
 
-See `THIRD_PARTY_LICENSES` for the full license.
+See [THIRD_PARTY_LICENCES](THIRD_PARTY_LICENCES) for the full license.
 
 ## AI Usage
 Let's be transparent on where and how AI is being used.
