@@ -3,8 +3,11 @@ async function load() {
     const btn = document.getElementById("nextbtn");
 
     if (btn) {
+        btn.disabled = true;
         btn.addEventListener("click", () => {
-            window.location.href = "usbmap.html";
+            if (!btn.disabled) {
+                window.location.href = "usbmap.html";
+            }
         });
     }
 
@@ -38,8 +41,15 @@ async function load() {
             </div>
             <div>${list}</div>
         `;
+
+        if (btn) {
+            btn.disabled = false;
+        }
     } catch (err) {
         box.textContent = "Error: " + err.message;
+        if (btn) {
+            btn.disabled = false;
+        }
     }
 }
 

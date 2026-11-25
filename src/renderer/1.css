@@ -117,6 +117,21 @@ h1 {
     box-shadow: none;
 }
 
+.actionbutton:disabled,
+.actionbutton[disabled] {
+    background-color: #2b2833;
+    color: #6a6475;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.actionbutton:disabled::before,
+.actionbutton[disabled]::before {
+    display: none;
+}
+
 .scorecard {
     background: #1e1b24;
     border: 1px solid #2d2836;

@@ -2,17 +2,26 @@ async function start() {
     const box = document.getElementById("status");
     const btn = document.getElementById("nextbtn");
 
-    btn.addEventListener("click", () => {
-        window.location.href = "1.html";
-    });
+    if (btn) {
+        btn.disabled = true;
+        btn.addEventListener("click", () => {
+            if (!btn.disabled) {
+                window.location.href = "1.html";
+            }
+        });
+    }
 
     try {
         const res = await window.api.installdeps();
         box.textContent = res;
-        btn.style.display = "inline-flex";
+        if (btn) {
+            btn.disabled = false;
+        }
     } catch (err) {
         box.textContent = "Error: " + err.message;
-        btn.style.display = "inline-flex";
+        if (btn) {
+            btn.disabled = false;
+        }
     }
 }
 

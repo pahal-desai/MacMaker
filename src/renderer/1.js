@@ -3,8 +3,11 @@ async function loadspecs() {
     const btn = document.getElementById("nextbtn");
 
     if (btn) {
+        btn.disabled = true;
         btn.addEventListener("click", () => {
-            window.location.href = "analysis.html";
+            if (!btn.disabled) {
+                window.location.href = "analysis.html";
+            }
         });
     }
 
@@ -29,8 +32,14 @@ async function loadspecs() {
             <p><strong>OS:</strong> ${specs.os || "Unknown"}</p>
             ${specs.hardware ? `<p><strong>Hardware:</strong> ${specs.hardware}</p>` : ""}
         `;
+        if (btn) {
+            btn.disabled = false;
+        }
     } catch (err) {
         box.textContent = "Error: " + err.message;
+        if (btn) {
+            btn.disabled = false;
+        }
     }
 }
 
