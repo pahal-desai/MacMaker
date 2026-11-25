@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MacMaker - Guided USB Mapping</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@600&display=swap">
+    <link rel="stylesheet" href="1.css">
+</head>
+<body>
+    <div class="content">
+        <div class="headrow">
+            <h1>USB Mapping</h1>
+            <div class="usbanim">
+                <div class="laptopframe">
+                    <div class="usbslot"></div>
+                    <div class="pulsewave"></div>
+                </div>
+                <div class="usbdrive">
+                    <div class="usbtip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 style="margin: 0; font-size: 1.15rem; color: var(--text);">Detected USB Ports</h2>
+            <div>
+                <button class="actionbutton" type="button" id="scanbtn" style="min-height: 34px; padding: 0 16px;">Refresh Scan</button>
+            </div>
+        </div>
+
+        <div id="portsbox" class="portgrid">
+            <p style="color: var(--subtext);">Scanning USB ports...</p>
+        </div>
+    </div>
+
+    <div class="bottom-actions" style="display: flex; justify-content: space-between;">
+        <button class="actionbutton" type="button" id="backbtn">Back</button>
+        <button class="actionbutton" type="button" id="nextbtn">Next</button>
+    </div>
+
+    <footer>
+        Open Source | <a href="https://github.com/pahal-desai/MacMaker/" target="_blank"><u>Github</u></a> <br>made with &lt;3 by <a href="https://pahal.is-a.dev/" target="_blank"><u>Pahal</u></a>
+    </footer>
+
+    <script src="usbmap.js"></script>
+</body>
+</html>

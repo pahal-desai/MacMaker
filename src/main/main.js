@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("path");
 const { spawn } = require("child_process");
 const fs = require("fs");
@@ -66,6 +66,50 @@ async function fetchanalysis() {
     }
 }
 
+async function getusb() {
+    const py = getpython();
+    const script = getscript("usbmap.py");
+    const out = await run(py, [script]);
+    try {
+        return JSON.parse(out.trim());
+    } catch (err) {
+        throw new Error(`Failed to parse usb info: ${err.message}`);
+    }
+}
+
+function makekext(data) {
+    return new Promise((resolve, reject) => {
+        const py = getpython();
+        const script = getscript("usbmap.py");
+        const proc = spawn(py, [script, "build"]);
+        let out = "";
+        let err = "";
+
+        proc.stdout.on("data", (chunk) => {
+            out += chunk.toString();
+        });
+
+        proc.stderr.on("data", (chunk) => {
+            err += chunk.toString();
+        });
+
+        proc.on("close", (code) => {
+            if (code === 0) {
+                try {
+                    resolve(JSON.parse(out.trim()));
+                } catch (e) {
+                    resolve({ status: "success", path: out.trim() });
+                }
+            } else {
+                reject(new Error(err || `Exit code ${code}`));
+            }
+        });
+
+        proc.stdin.write(JSON.stringify(data));
+        proc.stdin.end();
+    });
+}
+
 async function installdeps() {
     const py = getpython();
     const pkgs = ["psutil", "py-cpuinfo"];
@@ -129,6 +173,20 @@ ipcMain.handle("gethardwarespecs", async () => {
 
 ipcMain.handle("getanalysis", async () => {
     return await fetchanalysis();
+});
+
+ipcMain.handle("getusb", async () => {
+    return await getusb();
+});
+
+ipcMain.handle("makekext", async (event, data) => {
+    return await makekext(data);
+});
+
+ipcMain.handle("openfolder", async (event, target) => {
+    if (target) {
+        await shell.openPath(target);
+    }
 });
 
 ipcMain.handle("get-hardware-specs", async () => {

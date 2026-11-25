@@ -4,6 +4,7 @@ async function load() {
 
     if (btn) {
         btn.addEventListener("click", () => {
+            window.location.href = "usbmap.html";
         });
     }
 

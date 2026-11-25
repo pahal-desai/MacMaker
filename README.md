@@ -46,7 +46,7 @@ The implementation may evolve as development progresses.
 - [x] Desktop application foundation
 - [x] Hardware detection
 - [x] Hardware compatibility analysis
-- [ ] Guided USB mapping
+- [x] Guided USB mapping
 - [ ] OpenCore EFI generation
 - [ ] macOS recovery preparation
 - [ ] Guided installation workflow
@@ -137,8 +137,12 @@ Installing macOS on non-Apple hardware may be restricted by Apple's software lic
 MacMaker uses [OpCore Simplify](https://github.com/lzhoang2801/OpCore-Simplify)
 for hardware analysis and OpenCore configuration.
 
+MacMaker uses [USBToolBox](https://github.com/USBToolBox) (tool and kext)
+for guided USB discovery and custom mapping.
+
 OpCore Simplify is licensed under the BSD 3-Clause License.
-Copyright belongs to its original authors.
+USBToolBox is licensed under the BSD 3-Clause License.
+Copyright belongs to their original authors.
 
 See `THIRD_PARTY_LICENSES` for the full license.
 
