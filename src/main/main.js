@@ -178,6 +178,78 @@ function makeefi(win) {
     });
 }
 
+async function getusbdrives() {
+    const py = getpython();
+    const script = getscript("recovery.py");
+    return new Promise((resolve, reject) => {
+        const proc = spawn(py, [script, "list"], { env: getscriptenv() });
+        let out = "";
+        let err = "";
+        proc.stdout.on("data", (d) => { out += d.toString(); });
+        proc.stderr.on("data", (d) => { err += d.toString(); });
+        proc.on("close", (code) => {
+            if (code === 0) {
+                try {
+                    resolve(JSON.parse(out.trim()));
+                } catch (e) {
+                    reject(new Error(`Failed to parse USB drives: ${e.message}`));
+                }
+            } else {
+                reject(new Error(err || `Exit code ${code}`));
+            }
+        });
+    });
+}
+
+function makeusb(win, drive, ver) {
+    return new Promise((resolve, reject) => {
+        const py = getpython();
+        const script = getscript("recovery.py");
+        const proc = spawn(py, [script, "make", drive, ver], { env: getscriptenv() });
+        let buf = "";
+        let err = "";
+        let res = null;
+
+        proc.stdout.on("data", (chunk) => {
+            buf += chunk.toString();
+            const lines = buf.split(/\r?\n/);
+            buf = lines.pop() || "";
+            for (const line of lines) {
+                const text = line.trim();
+                if (!text.startsWith("{")) continue;
+                try {
+                    const parsed = JSON.parse(text);
+                    if (parsed.type === "progress" && win && !win.isDestroyed()) {
+                        win.webContents.send("usbprogress", parsed);
+                    } else if (parsed.type === "done") {
+                        res = parsed;
+                    }
+                } catch (e) {
+                }
+            }
+        });
+
+        proc.stderr.on("data", (chunk) => {
+            err += chunk.toString();
+        });
+
+        proc.on("close", (code) => {
+            if (buf.trim().startsWith("{")) {
+                try {
+                    const parsed = JSON.parse(buf.trim());
+                    if (parsed.type === "done") res = parsed;
+                } catch (e) {
+                }
+            }
+            if (code === 0 && res) {
+                resolve(res);
+            } else {
+                reject(new Error(err || `Bootable USB failed with exit code ${code}`));
+            }
+        });
+    });
+}
+
 async function installdeps() {
     const py = getpython();
     const pkgs = ["psutil", "py-cpuinfo"];
@@ -254,6 +326,15 @@ ipcMain.handle("makekext", async (event, data) => {
 ipcMain.handle("makeefi", async (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     return await makeefi(win);
+});
+
+ipcMain.handle("getusbdrives", async () => {
+    return await getusbdrives();
+});
+
+ipcMain.handle("makeusb", async (event, drive, ver) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    return await makeusb(win, drive, ver);
 });
 
 ipcMain.handle("openfolder", async (event, target) => {

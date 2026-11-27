@@ -2,24 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MacMaker - macOS Recovery</title>
+    <title>MacMaker - Bootable USB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@600&display=swap">
     <link rel="stylesheet" href="1.css">
 </head>
 <body>
-    <div class="content">
-        <h1>macOS Recovery Preparation</h1>
-        <div class="specs-text">
-            <p>Your USB ports have been mapped and your OpenCore EFI folder is ready.</p>
-            <p>Next up is preparing the macOS recovery installer for your EFI.</p>
+    <div class="content" id="mainbox">
+        <h1>Bootable USB Creator</h1>
+        <p style="color: var(--subtext); margin-bottom: 1.5rem;">Format your USB drive, download macOS Recovery from Apple, and copy your OpenCore EFI onto it.</p>
+
+        <div class="itemcard" id="formbox">
+            <div style="margin-bottom: 1rem;">
+                <label for="drivepick" style="display: block; font-weight: 600; margin-bottom: 0.4rem;">USB Flash Drive</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <select id="drivepick" class="typeopt" style="padding: 8px 12px; font-size: 0.9rem;">
+                        <option value="">Scanning USB drives...</option>
+                    </select>
+                    <button class="actionbutton" type="button" id="refreshbtn" style="min-height: 36px; padding: 0 16px;">Refresh</button>
+                </div>
+                <p class="itemnotes" style="color: #ffaaa5; margin-top: 0.4rem;">Warning: Everything on the selected USB drive will be erased.</p>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+                <label for="verpick" style="display: block; font-weight: 600; margin-bottom: 0.4rem;">macOS Version</label>
+                <select id="verpick" class="typeopt" style="width: 100%; padding: 8px 12px; font-size: 0.9rem;">
+                    <option value="15">macOS Sequoia 15</option>
+                    <option value="14">macOS Sonoma 14</option>
+                    <option value="13" selected>macOS Ventura 13</option>
+                    <option value="12">macOS Monterey 12</option>
+                    <option value="11">macOS Big Sur 11</option>
+                    <option value="10.15">macOS Catalina 10.15</option>
+                    <option value="10.13">macOS High Sierra 10.13</option>
+                </select>
+            </div>
+
+            <button class="actionbutton" type="button" id="createbtn" disabled>Create Bootable USB</button>
         </div>
+
+        <div id="usbstatus" style="display: none; margin-top: 1rem;">
+            <p id="usbmsg" class="specs-text">Starting...</p>
+            <div class="efibar">
+                <div id="usbfill" class="efifill"></div>
+            </div>
+        </div>
+        <div id="usbresult" style="margin-top: 1rem;"></div>
     </div>
 
     <div class="bottom-actions" style="display: flex; justify-content: space-between;">
         <button class="actionbutton" type="button" id="backbtn">Back</button>
-        <button class="actionbutton" type="button" id="nextbtn">Next</button>
+        <button class="actionbutton" type="button" id="nextbtn" disabled>Next</button>
     </div>
 
     <footer>

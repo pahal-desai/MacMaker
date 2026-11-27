@@ -847,6 +847,13 @@ def buildefi():
 
     macosname = os_data.get_macos_name_by_darwin(macosver) or f"macOS ({macosver})"
 
+    try:
+        os.makedirs(cachedir, exist_ok=True)
+        with open(os.path.join(cachedir, "lastefi.json"), "w") as mf:
+            json.dump({"darwin": macosver[:2], "macos": macosname, "smbios": smbiosmodel}, mf)
+    except Exception:
+        pass
+
     res = {
         "type": "done",
         "status": "success",
