@@ -4,7 +4,7 @@ function init() {
 
     if (back) {
         back.addEventListener("click", () => {
-            window.location.href = "usbmap.html";
+            window.location.href = "efi.html";
         });
     }
 

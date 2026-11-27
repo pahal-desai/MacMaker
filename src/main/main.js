@@ -77,11 +77,30 @@ async function getusb() {
     }
 }
 
+function getdatadir() {
+    if (app.isPackaged) {
+        return path.join(app.getPath("documents"), "MacMaker");
+    }
+    return path.join(__dirname, "../..");
+}
+
+function getcachedir() {
+    return path.join(app.getPath("userData"), "cache");
+}
+
+function getscriptenv() {
+    return {
+        ...process.env,
+        MACMAKERDIR: getdatadir(),
+        MACMAKERCACHE: getcachedir()
+    };
+}
+
 function makekext(data) {
     return new Promise((resolve, reject) => {
         const py = getpython();
         const script = getscript("usbmap.py");
-        const proc = spawn(py, [script, "build"]);
+        const proc = spawn(py, [script, "build"], { env: getscriptenv() });
         let out = "";
         let err = "";
 
@@ -107,6 +126,55 @@ function makekext(data) {
 
         proc.stdin.write(JSON.stringify(data));
         proc.stdin.end();
+    });
+}
+
+function makeefi(win) {
+    return new Promise((resolve, reject) => {
+        const py = getpython();
+        const script = getscript("efi.py");
+        const proc = spawn(py, [script], { env: getscriptenv() });
+        let buf = "";
+        let err = "";
+        let res = null;
+
+        proc.stdout.on("data", (chunk) => {
+            buf += chunk.toString();
+            const lines = buf.split(/\r?\n/);
+            buf = lines.pop() || "";
+            for (const line of lines) {
+                const text = line.trim();
+                if (!text.startsWith("{")) continue;
+                try {
+                    const parsed = JSON.parse(text);
+                    if (parsed.type === "progress" && win && !win.isDestroyed()) {
+                        win.webContents.send("efiprogress", parsed);
+                    } else if (parsed.type === "done") {
+                        res = parsed;
+                    }
+                } catch (e) {
+                }
+            }
+        });
+
+        proc.stderr.on("data", (chunk) => {
+            err += chunk.toString();
+        });
+
+        proc.on("close", (code) => {
+            if (buf.trim().startsWith("{")) {
+                try {
+                    const parsed = JSON.parse(buf.trim());
+                    if (parsed.type === "done") res = parsed;
+                } catch (e) {
+                }
+            }
+            if (code === 0 && res) {
+                resolve(res);
+            } else {
+                reject(new Error(err || `EFI generation failed with exit code ${code}`));
+            }
+        });
     });
 }
 
@@ -181,6 +249,11 @@ ipcMain.handle("getusb", async () => {
 
 ipcMain.handle("makekext", async (event, data) => {
     return await makekext(data);
+});
+
+ipcMain.handle("makeefi", async (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    return await makeefi(win);
 });
 
 ipcMain.handle("openfolder", async (event, target) => {

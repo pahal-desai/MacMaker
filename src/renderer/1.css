@@ -418,6 +418,24 @@ h1 {
     flex-wrap: wrap;
 }
 
+.efibar {
+    width: 100%;
+    max-width: 480px;
+    height: 8px;
+    background: #1e1b24;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.75rem;
+}
+
+.efifill {
+    width: 10%;
+    height: 100%;
+    background: #d0bcff;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
 footer {
     text-align: center;
     font-size: 0.85rem;

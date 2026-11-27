@@ -128,7 +128,7 @@ function init() {
     if (next) {
         next.addEventListener("click", async () => {
             await autokext();
-            window.location.href = "recosver.html";
+            window.location.href = "efi.html";
         });
     }
 

@@ -219,7 +219,8 @@ def buildkext(items):
     if not isinstance(items, list):
         items = []
 
-    outdir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../kexts"))
+    basedir = os.environ.get("MACMAKERDIR")
+    outdir = os.path.join(basedir, "kexts") if basedir else os.path.abspath(os.path.join(os.path.dirname(__file__), "../../kexts"))
     os.makedirs(outdir, exist_ok=True)
 
     utbmapdir = os.path.join(outdir, "UTBMap.kext")
